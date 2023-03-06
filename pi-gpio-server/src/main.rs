@@ -1,5 +1,5 @@
 use core::time;
-use gpio::{sysfs::SysFsGpioInput, GpioIn, GpioOut};
+use gpio::{sysfs::SysFsGpioInput, GpioIn};
 use multicaster::{self, Multicaster};
 use std::{thread, time::Duration};
 use tokio;
