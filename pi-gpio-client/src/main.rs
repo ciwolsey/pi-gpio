@@ -1,19 +1,19 @@
 use core::time;
-use gpio::{sysfs::{SysFsGpioInput, SysFsGpioOutput}, GpioIn, GpioOut};
+use gpio::{
+    sysfs::{SysFsGpioInput, SysFsGpioOutput},
+    GpioIn, GpioOut,
+};
 use multicaster::{self, Multicaster};
 use std::{thread, time::Duration};
 use tokio;
-
-
-
 struct Buzzer {
-    gpio: SysFsGpioOutput
+    gpio: SysFsGpioOutput,
 }
 
 impl Buzzer {
     fn new() -> Self {
         Self {
-            gpio: gpio::sysfs::SysFsGpioOutput::open(27).unwrap()
+            gpio: gpio::sysfs::SysFsGpioOutput::open(27).unwrap(),
         }
     }
     fn beep(&mut self, duration: u64) {
@@ -25,8 +25,19 @@ impl Buzzer {
 
 #[tokio::main]
 async fn main() {
-    let multi = Multicaster::new("0.0.0.0", "239.0.0.20", 5007, true).await;
-    
     let mut buzzer = Buzzer::new();
     buzzer.beep(500);
+
+    let multi = Multicaster::new("0.0.0.0", "239.0.0.20", 5007, true).await;
+    let mut buf: [u8; 256] = [0x00; 256];
+
+    loop {
+        multi.rec(&mut buf).await;
+
+        let message = String::from_utf8(buf.to_vec()).unwrap();
+
+        if message.contains("door: opened") {
+            buzzer.beep(500);
+        }
+    }
 }
