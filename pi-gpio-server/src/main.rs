@@ -60,17 +60,18 @@ enum Pin {
 #[tokio::main]
 async fn main() {
     let mut pins = Pins::new();
+    loop {
+        let rain = pins.check(Pin::Rain);
+        let alarm = pins.check(Pin::Alarm);
 
-    let rain = pins.check(Pin::Rain);
-    let alarm = pins.check(Pin::Alarm);
+        match rain {
+            Some(change_to) => println!("Rain value changed to: {}", change_to),
+            None => (),
+        }
 
-    match rain {
-        Some(change_to) => println!("Rain value changed to: {}", change_to),
-        None => (),
-    }
-
-    match alarm {
-        Some(change_to) => println!("Alarm value changed to: {}", change_to),
-        None => (),
+        match alarm {
+            Some(change_to) => println!("Alarm value changed to: {}", change_to),
+            None => (),
+        }
     }
 }
