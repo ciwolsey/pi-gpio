@@ -1,7 +1,7 @@
 use core::time;
 use gpio::{sysfs::SysFsGpioInput, GpioIn, GpioOut};
 use multicaster::{self, Multicaster};
-use std::thread;
+use std::{thread, time::Duration};
 use tokio;
 
 struct Pins {
@@ -64,7 +64,9 @@ async fn main() {
     let multi = Multicaster::new("0.0.0.0", "239.0.0.20", 5007, true).await;
 
     loop {
-        match pins.check(Pin::Rain){
+        thread::sleep(Duration::from(time::Duration::from_millis(20)));
+
+        match pins.check(Pin::Rain) {
             Some(changed_to) => {
                 println!("Rain value changed to: {}", changed_to);
                 match changed_to {
@@ -75,7 +77,7 @@ async fn main() {
             _ => (),
         }
 
-        match pins.check(Pin::Alarm){
+        match pins.check(Pin::Alarm) {
             Some(changed_to) => {
                 println!("Alarm value changed to: {}", changed_to);
                 match changed_to {
