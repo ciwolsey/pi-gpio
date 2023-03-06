@@ -26,7 +26,7 @@ impl Pins {
         }
     }
 
-    fn poll(&mut self, pin: Pin) -> Option<bool> {
+    fn check(&mut self, pin: Pin) -> Option<bool> {
         match pin {
             Pin::Rain => {
                 let current: bool = self.rain.read_value().unwrap().into();
@@ -61,8 +61,8 @@ enum Pin {
 async fn main() {
     let mut pins = Pins::new();
 
-    let rain = pins.poll(Pin::Rain);
-    let alarm = pins.poll(Pin::Alarm);
+    let rain = pins.check(Pin::Rain);
+    let alarm = pins.check(Pin::Alarm);
 
     match rain {
         Some(change_to) => println!("Rain value changed to: {}", change_to),
