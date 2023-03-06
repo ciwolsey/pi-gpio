@@ -18,7 +18,7 @@ impl Buzzer {
     }
     fn beep(&mut self, duration: u64) {
         self.gpio.set_high().unwrap();
-        thread::sleep(Duration::from(time::Duration::from_millis(500)));
+        thread::sleep(Duration::from(time::Duration::from_millis(duration)));
         self.gpio.set_low().unwrap();
     }
 }
@@ -32,6 +32,7 @@ async fn main() {
     let mut buf: [u8; 256] = [0x00; 256];
 
     loop {
+        buf.fill(0x00);
         multi.rec(&mut buf).await;
 
         let message = String::from_utf8(buf.to_vec()).unwrap();
@@ -42,11 +43,13 @@ async fn main() {
         }
 
         if message.contains("alarm: true") {
-            buzzer.beep(200);
-            thread::sleep(Duration::from(time::Duration::from_millis(50)));
-            buzzer.beep(200);
-            thread::sleep(Duration::from(time::Duration::from_millis(50)));
-            buzzer.beep(200);
+            buzzer.beep(300);
+            thread::sleep(Duration::from(time::Duration::from_millis(200)));
+            buzzer.beep(300);
+            thread::sleep(Duration::from(time::Duration::from_millis(200)));
+            buzzer.beep(300);
+            thread::sleep(Duration::from(time::Duration::from_millis(200)));
+            buzzer.beep(300);
         }
     }
 }
