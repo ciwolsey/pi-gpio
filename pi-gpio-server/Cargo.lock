@@ -87,6 +87,7 @@ dependencies = [
 [[package]]
 name = "multicaster"
 version = "0.1.2"
+source = "git+https://github.com/ciwolsey/multicaster.git#1c51052d02c61dfdbd568ffe51cb98c9fa624a5e"
 dependencies = [
  "tokio",
 ]

@@ -8,4 +8,4 @@ edition = "2021"
 [dependencies]
 tokio = { version = "1.26.0", features = ["full"] }
 gpio = "0.4.1"
-multicaster = { path = "../multicaster/"}
+multicaster = { git = "https://github.com/ciwolsey/multicaster.git"}
