@@ -35,6 +35,7 @@ async fn main() {
         multi.rec(&mut buf).await;
 
         let message = String::from_utf8(buf.to_vec()).unwrap();
+        println!("Received: {}", message);
 
         if message.contains("door: opened") {
             buzzer.beep(500);
