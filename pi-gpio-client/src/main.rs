@@ -38,11 +38,15 @@ async fn main() {
         println!("Received: {}", message);
 
         if message.contains("door: opened") {
-            buzzer.beep(500);
+            buzzer.beep(3000);
         }
 
-        if message.contains("door: opened") {
-            buzzer.beep(500);
+        if message.contains("alarm: true") {
+            buzzer.beep(200);
+            thread::sleep(Duration::from(time::Duration::from_millis(50)));
+            buzzer.beep(200);
+            thread::sleep(Duration::from(time::Duration::from_millis(50)));
+            buzzer.beep(200);
         }
     }
 }
