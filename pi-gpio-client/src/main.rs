@@ -42,7 +42,7 @@ async fn main() {
             buzzer.beep(3000);
         }
 
-        if message.contains("alarm: true") {
+        if message.contains("rain: true") {
             buzzer.beep(300);
             thread::sleep(Duration::from(time::Duration::from_millis(200)));
             buzzer.beep(300);
