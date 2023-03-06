@@ -30,7 +30,7 @@ impl Pins {
         match pin {
             Pin::Rain => {
                 let current: bool = self.rain.read_value().unwrap().into();
-                let changed = current == self.rain_last;
+                let changed = current != self.rain_last;
                 self.rain_last = current;
                 if changed {
                     Some(current)
@@ -40,7 +40,7 @@ impl Pins {
             }
             Pin::Alarm => {
                 let current: bool = self.alarm.read_value().unwrap().into();
-                let changed = current == self.alarm_last;
+                let changed = current != self.alarm_last;
                 self.alarm_last = current;
                 if changed {
                     Some(current)
@@ -70,7 +70,7 @@ async fn main() {
     }
 
     match alarm {
-        Some(change_to) => println!("Rain value changed to: {}", change_to),
+        Some(change_to) => println!("Alarm value changed to: {}", change_to),
         None => (),
     }
 }
