@@ -1,6 +1,6 @@
 use core::time;
 use gpio::{sysfs::SysFsGpioInput, GpioIn, GpioOut};
-use multicaster;
+use multicaster::{self, Multicaster};
 use std::thread;
 use tokio;
 
@@ -26,6 +26,7 @@ impl Pins {
         }
     }
 
+    /// Alarm value: true when door is shut
     fn check(&mut self, pin: Pin) -> Option<bool> {
         match pin {
             Pin::Rain => {
@@ -60,17 +61,23 @@ enum Pin {
 #[tokio::main]
 async fn main() {
     let mut pins = Pins::new();
-    loop {
-        let rain = pins.check(Pin::Rain);
-        let alarm = pins.check(Pin::Alarm);
 
-        match rain {
+    let multi = Multicaster::new("0.0.0.0", "239.0.0.20", 5007, true).await;
+
+    loop {
+        match pins.check(Pin::Rain) {
             Some(change_to) => println!("Rain value changed to: {}", change_to),
             None => (),
         }
 
-        match alarm {
-            Some(change_to) => println!("Alarm value changed to: {}", change_to),
+        match pins.check(Pin::Alarm){
+            Some(changed_to) => {
+                println!("Alarm value changed to: {}", changed_to);
+                match changed_to {
+                    true => multi.send(String::from("door: closed").as_bytes()).await,
+                    false => multi.send(String::from("door: opened").as_bytes()).await,
+                }
+            }
             None => (),
         }
     }
