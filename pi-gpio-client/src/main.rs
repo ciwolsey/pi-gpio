@@ -40,5 +40,9 @@ async fn main() {
         if message.contains("door: opened") {
             buzzer.beep(500);
         }
+
+        if message.contains("door: opened") {
+            buzzer.beep(500);
+        }
     }
 }
