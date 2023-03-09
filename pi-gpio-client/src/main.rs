@@ -3,6 +3,7 @@ use gpio::{sysfs::SysFsGpioOutput, GpioOut};
 use multicaster::{self, Multicaster};
 use std::{thread, time::Duration};
 use tokio;
+
 struct Buzzer {
     gpio: SysFsGpioOutput,
 }
@@ -20,8 +21,22 @@ impl Buzzer {
     }
 }
 
+fn wait_for_gpio() {
+    loop {
+        if let Ok(_) = gpio::sysfs::SysFsGpioOutput::open(2) {
+            println!("Failed to open GPIO, retrying in 5 seconds.");
+            return;
+        }
+        println!("Failed to open GPIO, retrying in 5 seconds.");
+        thread::sleep(Duration::from(time::Duration::from_millis(5000)));
+    };
+}
+
 #[tokio::main]
 async fn main() {
+    // Need to wait for gpio to become avilable
+    wait_for_gpio();
+
     let mut buzzer = Buzzer::new();
     buzzer.beep(500);
 
