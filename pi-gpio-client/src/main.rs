@@ -24,7 +24,7 @@ impl Buzzer {
 fn wait_for_gpio() {
     loop {
         if let Ok(_) = gpio::sysfs::SysFsGpioOutput::open(2) {
-            println!("Failed to open GPIO, retrying in 5 seconds.");
+            println!("GPIO ready.");
             return;
         }
         println!("Failed to open GPIO, retrying in 5 seconds.");
