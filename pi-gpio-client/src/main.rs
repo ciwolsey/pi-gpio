@@ -1,8 +1,5 @@
 use core::time;
-use gpio::{
-    sysfs::{SysFsGpioInput, SysFsGpioOutput},
-    GpioIn, GpioOut,
-};
+use gpio::{sysfs::SysFsGpioOutput, GpioOut};
 use multicaster::{self, Multicaster};
 use std::{thread, time::Duration};
 use tokio;
@@ -12,7 +9,6 @@ struct Buzzer {
 
 impl Buzzer {
     fn new() -> Self {
-        thread::sleep(Duration::from(time::Duration::from_secs(30)));
         Self {
             gpio: gpio::sysfs::SysFsGpioOutput::open(27).unwrap(),
         }

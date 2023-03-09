@@ -1,0 +1,13 @@
+[Unit]
+Description=gpio-client
+
+[Service]
+ExecStart=/home/pi/Projects/pi-gpio/pi-gpio-client/target/release/pi-gpio-client
+WorkingDirectory=/home/pi/Projects/pi-gpio/pi-gpio-client/target/release/
+StandardOutput=inherit
+StandardError=inherit
+Restart=always
+User=pi
+
+[Install]
+WantedBy=network-online.target

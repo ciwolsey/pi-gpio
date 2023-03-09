@@ -1,6 +1,5 @@
 [Unit]
 Description=gpio-server
-After=network.target
 
 [Service]
 ExecStart=/home/pi/Projects/pi-gpio/pi-gpio-server/target/release/pi-gpio-server
@@ -11,4 +10,4 @@ Restart=always
 User=pi
 
 [Install]
-WantedBy=multi-user.target
+WantedBy=network-online.target
