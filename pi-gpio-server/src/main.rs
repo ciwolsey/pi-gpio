@@ -58,8 +58,20 @@ enum Pin {
     Alarm,
 }
 
+fn wait_for_gpio() {
+    loop {
+        if let Ok(_) = gpio::sysfs::SysFsGpioOutput::open(2) {
+            println!("GPIO ready.");
+            return;
+        }
+        println!("Failed to open GPIO, retrying in 5 seconds.");
+        thread::sleep(Duration::from(time::Duration::from_millis(5000)));
+    };
+}
+
 #[tokio::main]
 async fn main() {
+    wait_for_gpio();
     let mut pins = Pins::new();
     let multi = Multicaster::new("0.0.0.0", "239.0.0.20", 5007, true).await;
 
